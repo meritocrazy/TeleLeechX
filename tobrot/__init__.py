@@ -13,6 +13,7 @@ from time import time
 from requests import get as rget
 from os import environ, path as opath
 from subprocess import run
+from threading import Lock as ThreadLock
 from asyncio import Lock
 from urllib.request import urlretrieve
 from collections import defaultdict
@@ -80,7 +81,9 @@ user_specific_config = {}
 PRE_DICT = {}
 CAP_DICT = {}
 IMDB_TEMPLATE = {}
-__version__ = "2.7.0"
+USER_THEMES = {}
+AVAILABLE_THEMES = {}
+__version__ = "2.7.4"
 
 # The Telegram API things >>>>>>>>>>>
 TG_BOT_TOKEN = getVar("TG_BOT_TOKEN", "")
@@ -204,17 +207,19 @@ STRING_SESSION = getVar("STRING_SESSION", "")
 
 #Bot Command [IMDB]  >>>>>>>>>>>
 CUSTOM_CAPTION = getVar("CUSTOM_CAPTION", "")
-MAX_LIST_ELM = getVar("MAX_LIST_ELM", None)
+MAX_LIST_ELM = getVar("MAX_LIST_ELM", 4)
 DEF_IMDB_TEMPLATE = getVar("IMDB_TEMPLATE", '''<b>Title: </b> {title} [{year}]
 <b>Also Known As:</b> {aka}
 <b>Rating ⭐️:</b> <i>{rating}</i>
-<b>Release Info: </b> <a href=f'{url_releaseinfo}'>{release_date}</a>
+<b>Release Info: </b> <a href="{url_releaseinfo}">{release_date}</a>
 <b>Genre: </b>{genres}
 <b>IMDb URL:</b> {url}
 <b>Language: </b>{languages}
 <b>Country of Origin : </b> {countries}
 
-<b>Story Line: </b><code>{plot}</code>''')
+<b>Story Line: </b><code>{plot}</code>
+
+<a href="{url_cast}">Read More ...</a>''')
 
 #Telegraph Creds  >>>>>>>>>>>
 TGH_AUTHOR = getVar("TGH_AUTHOR ", "Tele-LeechX")
@@ -249,6 +254,7 @@ gDict = defaultdict(lambda: [])
 user_settings = defaultdict(lambda: {})
 gid_dict = defaultdict(lambda: [])
 _lock = Lock()
+user_settings_lock = ThreadLock()
 
 # Rclone Config Via Raw Gist URL & BackUp >>>>>>>>
 try:                                                                      
