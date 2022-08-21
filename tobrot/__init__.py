@@ -83,7 +83,7 @@ CAP_DICT = {}
 IMDB_TEMPLATE = {}
 USER_THEMES = {}
 AVAILABLE_THEMES = {}
-__version__ = "2.7.6"
+__version__ = "2.7.8"
 
 # The Telegram API things >>>>>>>>>>>
 TG_BOT_TOKEN = getVar("TG_BOT_TOKEN", "")
@@ -136,6 +136,7 @@ MAX_TG_SPLIT_FILE_SIZE = int(getVar("MAX_TG_SPLIT_FILE_SIZE", "2095242840"))
 
 # Vars for the Display Progress >>>>>>>>
 FINISHED_PROGRESS_STR = getVar("FINISHED_PROGRESS_STR", "■")
+HALF_FINISHED = getVar("HALF_FINISHED", "◩")
 UN_FINISHED_PROGRESS_STR = getVar("UN_FINISHED_PROGRESS_STR", "□")
 
 # Add Offensive API >>>>>>>>
